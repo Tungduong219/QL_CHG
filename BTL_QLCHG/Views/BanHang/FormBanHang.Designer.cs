@@ -84,7 +84,7 @@
             this.dgvGioHang.GridColor = System.Drawing.Color.LightGray;
             this.dgvGioHang.Location = new System.Drawing.Point(18, 32);
             this.dgvGioHang.Name = "dgvGioHang";
-            this.dgvGioHang.Size = new System.Drawing.Size(344, 167);
+            this.dgvGioHang.Size = new System.Drawing.Size(341, 167);
             this.dgvGioHang.TabIndex = 0;
             this.dgvGioHang.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGioHang_CellValueChanged);
             // 
@@ -152,7 +152,7 @@
             this.roundPanel2.Controls.Add(this.linkLabel3);
             this.roundPanel2.Location = new System.Drawing.Point(462, 44);
             this.roundPanel2.Name = "roundPanel2";
-            this.roundPanel2.Size = new System.Drawing.Size(380, 432);
+            this.roundPanel2.Size = new System.Drawing.Size(371, 432);
             this.roundPanel2.TabIndex = 4;
             // 
             // lblKhuyenMai
@@ -297,7 +297,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(854, 500);
+            this.ClientSize = new System.Drawing.Size(835, 490);
             this.Controls.Add(this.lb_timkiem);
             this.Controls.Add(this.roundPanel2);
             this.Controls.Add(this.roundPanel1);

@@ -50,31 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrystalReport1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrystalReport1.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ThongTinDangNhap.cs" />
     <Compile Include="Utils\RoundPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\FormBanHang.cs">
+    <Compile Include="Views\BanHang\FormBanHang.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormBanHang.Designer.cs">
+    <Compile Include="Views\BanHang\FormBanHang.Designer.cs">
       <DependentUpon>FormBanHang.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormDangNhap.cs">
+    <Compile Include="Views\TrangChu\FormDangNhap.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormDangNhap.Designer.cs">
+    <Compile Include="Views\TrangChu\FormDangNhap.Designer.cs">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
     </Compile>
     <Compile Include="DataAccess\NhanVienDAL.cs" />
@@ -93,6 +82,12 @@
     </Compile>
     <Compile Include="Views\FormGiay.Designer.cs">
       <DependentUpon>FormGiay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KhachHang\FormSuaKhachHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\KhachHang\FormSuaKhachHang.Designer.cs">
+      <DependentUpon>FormSuaKhachHang.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\KhachHang\ThemKhachHang.cs">
       <SubType>Form</SubType>
@@ -118,20 +113,22 @@
     <Compile Include="Views\FormThongKe.Designer.cs">
       <DependentUpon>FormThongKe.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormTrangChu.cs">
+    <Compile Include="Views\TrangChu\FormTrangChu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormTrangChu.Designer.cs">
+    <Compile Include="Views\TrangChu\FormTrangChu.Designer.cs">
       <DependentUpon>FormTrangChu.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CrystalReport1.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>CrystalReport1.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormBanHang.resx">
+    <Compile Include="Views\KhachHang\TongKhachHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\KhachHang\TongKhachHang.Designer.cs">
+      <DependentUpon>TongKhachHang.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Views\BanHang\FormBanHang.resx">
       <DependentUpon>FormBanHang.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormDangNhap.resx">
+    <EmbeddedResource Include="Views\TrangChu\FormDangNhap.resx">
       <DependentUpon>FormDangNhap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -149,6 +146,9 @@
     <EmbeddedResource Include="Views\FormGiay.resx">
       <DependentUpon>FormGiay.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\KhachHang\FormSuaKhachHang.resx">
+      <DependentUpon>FormSuaKhachHang.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\KhachHang\ThemKhachHang.resx">
       <DependentUpon>ThemKhachHang.cs</DependentUpon>
     </EmbeddedResource>
@@ -161,20 +161,12 @@
     <EmbeddedResource Include="Views\FormThongKe.resx">
       <DependentUpon>FormThongKe.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormTrangChu.resx">
+    <EmbeddedResource Include="Views\TrangChu\FormTrangChu.resx">
       <DependentUpon>FormTrangChu.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="DataSet1.xsc">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="DataSet1.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="DataSet1.xss">
-      <DependentUpon>DataSet1.xsd</DependentUpon>
-    </None>
+    <EmbeddedResource Include="Views\KhachHang\TongKhachHang.resx">
+      <DependentUpon>TongKhachHang.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
