@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.cboKhuyenMai = new System.Windows.Forms.ComboBox();
-            this.cboNhanVien = new System.Windows.Forms.ComboBox();
             this.dgvGioHang = new System.Windows.Forms.DataGridView();
             this.lb_timkiem = new System.Windows.Forms.Label();
             this.roundPanel1 = new BTL_QLCHG.Utils.RoundPanel();
@@ -49,6 +48,8 @@
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblNhanVien = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGioHang)).BeginInit();
             this.roundPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDanhSachGiay)).BeginInit();
@@ -65,15 +66,6 @@
             this.cboKhuyenMai.TabIndex = 17;
             this.cboKhuyenMai.Text = "  Chọn khuyến mại....";
             this.cboKhuyenMai.SelectedIndexChanged += new System.EventHandler(this.cboKhuyenMai_SelectedIndexChanged);
-            // 
-            // cboNhanVien
-            // 
-            this.cboNhanVien.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cboNhanVien.Location = new System.Drawing.Point(20, 263);
-            this.cboNhanVien.Name = "cboNhanVien";
-            this.cboNhanVien.Size = new System.Drawing.Size(161, 25);
-            this.cboNhanVien.TabIndex = 15;
-            this.cboNhanVien.Text = "  Nhân viên tạo đơn....";
             // 
             // dgvGioHang
             // 
@@ -135,6 +127,8 @@
             // 
             this.roundPanel2.BackColor = System.Drawing.Color.White;
             this.roundPanel2.BorderRadius = 20;
+            this.roundPanel2.Controls.Add(this.lblNhanVien);
+            this.roundPanel2.Controls.Add(this.label1);
             this.roundPanel2.Controls.Add(this.lblKhuyenMai);
             this.roundPanel2.Controls.Add(this.btnThanhToan);
             this.roundPanel2.Controls.Add(this.label2);
@@ -143,7 +137,6 @@
             this.roundPanel2.Controls.Add(this.label3);
             this.roundPanel2.Controls.Add(this.lblThanhTien);
             this.roundPanel2.Controls.Add(this.lblTongTien);
-            this.roundPanel2.Controls.Add(this.cboNhanVien);
             this.roundPanel2.Controls.Add(this.cboKhuyenMai);
             this.roundPanel2.Controls.Add(this.dgvGioHang);
             this.roundPanel2.Controls.Add(this.txtSDTKhach);
@@ -209,7 +202,7 @@
             // 
             this.lblTenKhach.AutoSize = true;
             this.lblTenKhach.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblTenKhach.Location = new System.Drawing.Point(129, 242);
+            this.lblTenKhach.Location = new System.Drawing.Point(122, 241);
             this.lblTenKhach.Name = "lblTenKhach";
             this.lblTenKhach.Size = new System.Drawing.Size(60, 19);
             this.lblTenKhach.TabIndex = 8;
@@ -292,6 +285,26 @@
             this.linkLabel3.Text = "                                                                                 " +
     "                                     ";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(14, 263);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 19);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "NGƯỜI TẠO :";
+            // 
+            // lblNhanVien
+            // 
+            this.lblNhanVien.AutoSize = true;
+            this.lblNhanVien.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblNhanVien.Location = new System.Drawing.Point(108, 264);
+            this.lblNhanVien.Name = "lblNhanVien";
+            this.lblNhanVien.Size = new System.Drawing.Size(73, 19);
+            this.lblNhanVien.TabIndex = 23;
+            this.lblNhanVien.Text = "Nhân Viên";
+            // 
             // FormBanHang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -320,7 +333,6 @@
         private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.DataGridView dgvGioHang;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.ComboBox cboNhanVien;
         private System.Windows.Forms.ComboBox cboKhuyenMai;
         private System.Windows.Forms.Label lb_timkiem;
         private Utils.RoundPanel roundPanel1;
@@ -337,5 +349,7 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.Label lblNhanVien;
+        private System.Windows.Forms.Label label1;
     }
 }

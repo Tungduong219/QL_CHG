@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BTL_QLCHG.Views
+namespace BTL_QLCHG.Views.BaoCao
 {
-    public partial class FormKhoGiay : Form
+    public partial class FormXemBaoCao : Form
     {
-        public FormKhoGiay()
+        public FormXemBaoCao()
         {
             InitializeComponent();
         }

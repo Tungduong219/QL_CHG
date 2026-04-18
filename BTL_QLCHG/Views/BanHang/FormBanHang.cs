@@ -117,8 +117,10 @@ namespace BTL_QLCHG.Views
         {
             LoadDanhSachGiay();
             TaoCotChoGioHang();
-            LoadComboBoxNhanVien(); 
             LoadComboBoxKhuyenMai();
+
+   
+            lblNhanVien.Text = ThongTinDangNhap.TenNhanVien;
         }
 
         private void dgvDanhSachGiay_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -173,75 +175,97 @@ namespace BTL_QLCHG.Views
         {
             if (dgvGioHang.Rows.Count == 0)
             {
-                MessageBox.Show("Giỏ hàng trống. Vui lòng thêm sản phẩm trước khi thanh toán.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Giỏ hàng đang trống! Vui lòng chọn giày trước khi thanh toán.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             string maHD = TaoMaHoaDonTuDong();
 
-            string tienChu = lblThanhTien.Text.Replace("THÀNH TIỀN: ", "").Replace(" VNĐ", "").Replace(",", "");
-            decimal tongTien = Convert.ToDecimal(tienChu);
+            string tienChu = lblThanhTien.Text.Replace("THÀNH TIỀN: ", "").Replace(" VNĐ", "").Replace(",", "").Trim();
+            decimal tongTienSauGiam = Convert.ToDecimal(tienChu);
+
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
-                if (conn.State == ConnectionState.Closed)
-                {
-                    conn.Open();
-                }
-
+                if (conn.State == ConnectionState.Closed) conn.Open();
                 using (SqlTransaction trans = conn.BeginTransaction())
                 {
                     try
                     {
-                        string queryHD = "INSERT INTO tblHoaDon (sMaHD, sMaNV ,sMaKH , sMaKM, dNgayBan, fTongTien) VALUES (@MaHD, @MaNV, @MaKH ,NULL , GETDATE(), @TongTien)";
+                        // 3. Chèn dữ liệu vào bảng tblHoaDon
+                        string queryHD = @"INSERT INTO tblHoaDon (sMaHD, sMaNV, sMaKH, sMaKM, dNgayBan, fTongTien) 
+                                   VALUES (@MaHD, @MaNV, @MaKH, @MaKM, GETDATE(), @TongTien)";
+
                         using (SqlCommand cmdHD = new SqlCommand(queryHD, conn, trans))
                         {
                             cmdHD.Parameters.AddWithValue("@MaHD", maHD);
-                            cmdHD.Parameters.AddWithValue("@MaNV", "NV01"); 
-                            cmdHD.Parameters.AddWithValue("@MaKH", "KH01");
-                            cmdHD.Parameters.AddWithValue("@TongTien", tongTien);
+
+                            // LẤY MÃ NHÂN VIÊN ĐANG ĐĂNG NHẬP (Theo ý cô giáo)
+                            cmdHD.Parameters.AddWithValue("@MaNV", ThongTinDangNhap.MaNhanVien);
+
+                            cmdHD.Parameters.AddWithValue("@MaKH", maKhachHangChot); // KH01 hoặc mã khách tìm được
+
+                            // KIỂM TRA KHUYẾN MÃI: Nếu đang chọn dòng "Hãy chọn..." thì lưu NULL
+                            if (cboKhuyenMai.SelectedIndex <= 0)
+                            {
+                                cmdHD.Parameters.AddWithValue("@MaKM", DBNull.Value);
+                            }
+                            else
+                            {
+                                cmdHD.Parameters.AddWithValue("@MaKM", cboKhuyenMai.SelectedValue);
+                            }
+
+                            cmdHD.Parameters.AddWithValue("@TongTien", tongTienSauGiam);
                             cmdHD.ExecuteNonQuery();
                         }
 
                         foreach (DataGridViewRow row in dgvGioHang.Rows)
                         {
+                            if (row.Cells["Mã SKU"].Value == null) continue;
+
                             string maSKU = row.Cells["Mã SKU"].Value.ToString();
-                            int soLuong = Convert.ToInt32(row.Cells["Số Lượng"].Value);
+                            int soLuongBan = Convert.ToInt32(row.Cells["Số Lượng"].Value);
                             decimal donGia = Convert.ToDecimal(row.Cells["Đơn Giá"].Value);
 
-                            string queryCTHD = "INSERT INTO tblChiTietHoaDon (sMaHD, sMaSKU, iSoLuongBan, fDonGiaBan) VALUES (@MaHD, @MaSKU, @SoLuong, @DonGia)";
+                            // A. Chèn vào bảng tblChiTietHoaDon
+                            string queryCTHD = @"INSERT INTO tblChiTietHoaDon (sMaHD, sMaSKU, iSoLuongBan, fDonGiaBan) 
+                                         VALUES (@MaHD, @MaSKU, @SoLuong, @DonGia)";
                             using (SqlCommand cmdCTHD = new SqlCommand(queryCTHD, conn, trans))
                             {
                                 cmdCTHD.Parameters.AddWithValue("@MaHD", maHD);
                                 cmdCTHD.Parameters.AddWithValue("@MaSKU", maSKU);
-                                cmdCTHD.Parameters.AddWithValue("@SoLuong", soLuong);
+                                cmdCTHD.Parameters.AddWithValue("@SoLuong", soLuongBan);
                                 cmdCTHD.Parameters.AddWithValue("@DonGia", donGia);
                                 cmdCTHD.ExecuteNonQuery();
                             }
 
-
+                            // B. Cập nhật trừ số lượng trong kho tblKhoGiay
                             string queryKho = "UPDATE tblKhoGiay SET iSoLuong = iSoLuong - @SoLuong WHERE sMaSKU = @MaSKU";
                             using (SqlCommand cmdKho = new SqlCommand(queryKho, conn, trans))
                             {
-                                cmdKho.Parameters.AddWithValue("@SoLuong", soLuong);
+                                cmdKho.Parameters.AddWithValue("@SoLuong", soLuongBan);
                                 cmdKho.Parameters.AddWithValue("@MaSKU", maSKU);
                                 cmdKho.ExecuteNonQuery();
                             }
                         }
+
+                        // 5. Chốt đơn
                         trans.Commit();
+                        MessageBox.Show($"Thanh toán thành công!\nHóa đơn: {maHD}\nNgười lập: {ThongTinDangNhap.TenNhanVien}",
+                                        "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        MessageBox.Show("Thanh toán thành công! Mã hóa đơn: " + maHD, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                        // 6. Dọn dẹp giao diện sau khi bán xong
                         dgvGioHang.Rows.Clear();
+                        cboKhuyenMai.SelectedIndex = 0;
                         TinhTongTien();
-                        LoadDanhSachGiay(); 
+                        LoadDanhSachGiay(); // Load lại để cập nhật số lượng tồn kho mới lên màn hình
                     }
                     catch (Exception ex)
                     {
-                        trans.Rollback();
-                        MessageBox.Show("Lỗi thanh toán: " + ex.Message, "Lỗi Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        trans.Rollback(); // Có lỗi thì hủy hết thao tác trên
+                        MessageBox.Show("Lỗi thanh toán: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-
         }
 
         private string TaoMaHoaDonTuDong()
@@ -288,25 +312,10 @@ namespace BTL_QLCHG.Views
         TinhTongTien();
         }
 
-        private void LoadComboBoxNhanVien()
-        {
-            // Nhớ sửa sMaNV, sTenNV cho khớp cột trong DB của bạn
-            string query = "SELECT sMaNV, sTenNV FROM tblNhanVien";
-            using (SqlConnection conn = DatabaseHelper.GetConnection())
-            {
-                SqlDataAdapter da = new SqlDataAdapter(query, conn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
 
-                cboNhanVien.DataSource = dt;
-                cboNhanVien.DisplayMember = "sTenNV"; // Chữ hiện lên cho thu ngân xem
-                cboNhanVien.ValueMember = "sMaNV";   // Mã ngầm lưu xuống DB
-            }
-        }
 
         private void LoadComboBoxKhuyenMai()
         {
-            // Nhớ sửa sMaKM, sTenKM, fMucGiam cho khớp DB của bạn
             string query = "SELECT sMaKM, sTenChuongTrinh, iPhanTramGiam FROM tblKhuyenMai";
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
@@ -314,16 +323,18 @@ namespace BTL_QLCHG.Views
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                // Tạo thêm 1 dòng "Không áp dụng" cho trường hợp khách không có mã
+                // Tạo dòng gợi ý mặc định
                 DataRow dr = dt.NewRow();
                 dr["sMaKM"] = DBNull.Value;
-                dr["sTenChuongTrinh"] = "Không áp dụng";
+                dr["sTenChuongTrinh"] = "Chọn khuyến mãi..";
                 dr["iPhanTramGiam"] = 0;
-                dt.Rows.InsertAt(dr, 0); // Nhét lên dòng đầu tiên
+                dt.Rows.InsertAt(dr, 0);
 
                 cboKhuyenMai.DataSource = dt;
-                cboKhuyenMai.DisplayMember = "sTenTruongTrinh";
+                cboKhuyenMai.DisplayMember = "sTenChuongTrinh";
                 cboKhuyenMai.ValueMember = "sMaKM";
+
+                cboKhuyenMai.SelectedIndex = 0; // Để nó hiện dòng gợi ý ngay từ đầu
             }
         }
 
@@ -370,5 +381,11 @@ namespace BTL_QLCHG.Views
                 lblTenKhach.ForeColor = Color.Black;
             }    
         }
+
+        private void btnThemKhach_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

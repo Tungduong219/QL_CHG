@@ -1,5 +1,6 @@
 ﻿using BTL_QLCHG.Utils;
 using BTL_QLCHG.Views.KhachHang;
+using donhang;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TkeKhohang;
 
 namespace BTL_QLCHG.Views
 {
@@ -175,7 +177,7 @@ namespace BTL_QLCHG.Views
 
         private void btn_Giay_Click(object sender, EventArgs e)
         {
-            MoFormCon(new FormGiay());
+            MoFormCon(new BTL_QLBG.FormSanPham());
         }
 
         private void btn_KhoGiay_Click(object sender, EventArgs e)
@@ -218,5 +220,9 @@ namespace BTL_QLCHG.Views
 
         }
 
+        private void btnKhuyenMai_Click(object sender, EventArgs e)
+        {
+            MoFormCon (new FormKhuyenMai());
+        }
     }
 }

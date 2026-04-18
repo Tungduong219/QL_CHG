@@ -1,6 +1,6 @@
-﻿namespace BTL_QLCHG.Views
+﻿namespace BTL_QLCHG.Views.BaoCao
 {
-    partial class FormGiay
+    partial class FormXemBaoCao
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.CrystalReportViewer = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.SuspendLayout();
             // 
-            // label1
+            // CrystalReportViewer
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(428, 177);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "FORMGiay";
+            this.CrystalReportViewer.ActiveViewIndex = -1;
+            this.CrystalReportViewer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CrystalReportViewer.Cursor = System.Windows.Forms.Cursors.Default;
+            this.CrystalReportViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CrystalReportViewer.Location = new System.Drawing.Point(0, 0);
+            this.CrystalReportViewer.Name = "CrystalReportViewer";
+            this.CrystalReportViewer.Size = new System.Drawing.Size(800, 450);
+            this.CrystalReportViewer.TabIndex = 0;
+            this.CrystalReportViewer.ToolPanelView = CrystalDecisions.Windows.Forms.ToolPanelViewType.None;
             // 
-            // FormGiay
+            // FormXemBaoCao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label1);
-            this.Name = "FormGiay";
-            this.Text = "FormGiay";
+            this.Controls.Add(this.CrystalReportViewer);
+            this.Name = "FormXemBaoCao";
+            this.Text = "FormXemBaoCao";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        public CrystalDecisions.Windows.Forms.CrystalReportViewer CrystalReportViewer;
     }
 }

@@ -56,7 +56,6 @@
             this.btnThemKhachMoi.TabIndex = 0;
             this.btnThemKhachMoi.Text = "+ Thêm khách hàng";
             this.btnThemKhachMoi.UseVisualStyleBackColor = false;
-            this.btnThemKhachMoi.Click += new System.EventHandler(this.btnThemKhachMoi_Click);
             // 
             // label1
             // 
@@ -78,7 +77,6 @@
             this.cboPhanLoai.Name = "cboPhanLoai";
             this.cboPhanLoai.Size = new System.Drawing.Size(149, 28);
             this.cboPhanLoai.TabIndex = 2;
-            this.cboPhanLoai.SelectedIndexChanged += new System.EventHandler(this.cboPhanLoai_SelectedIndexChanged);
             // 
             // cboSapXep
             // 
@@ -89,7 +87,6 @@
             this.cboSapXep.Name = "cboSapXep";
             this.cboSapXep.Size = new System.Drawing.Size(141, 28);
             this.cboSapXep.TabIndex = 3;
-            this.cboSapXep.SelectedIndexChanged += new System.EventHandler(this.cboSapXep_SelectedIndexChanged);
             // 
             // txtTimKiem
             // 
@@ -98,7 +95,6 @@
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(175, 29);
             this.txtTimKiem.TabIndex = 6;
-            this.txtTimKiem.TextChanged += new System.EventHandler(this.txtTimKiem_TextChanged);
             // 
             // dgvKhachHang
             // 
@@ -120,7 +116,6 @@
             this.dgvKhachHang.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvKhachHang.Size = new System.Drawing.Size(719, 302);
             this.dgvKhachHang.TabIndex = 5;
-            this.dgvKhachHang.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKhachHang_CellContentClick);
             // 
             // colMaKH
             // 
@@ -172,7 +167,6 @@
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "TongKhachHang";
             this.Text = "TongKhachHang";
-            this.Load += new System.EventHandler(this.TongKhachHang_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvKhachHang)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

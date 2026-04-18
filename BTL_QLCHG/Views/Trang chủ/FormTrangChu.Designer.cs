@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.pnlSidebar = new System.Windows.Forms.Panel();
-            this.btnKhuyenMai = new System.Windows.Forms.Button();
             this.btn_DangXuat = new System.Windows.Forms.Button();
+            this.btnKhuyenMai = new System.Windows.Forms.Button();
             this.btn_BaoCao = new System.Windows.Forms.Button();
             this.btn_KhoGiay = new System.Windows.Forms.Button();
             this.btn_Giay = new System.Windows.Forms.Button();
-            this.btn_KhachHang = new System.Windows.Forms.Button();
             this.btn_NhanVien = new System.Windows.Forms.Button();
+            this.btn_KhachHang = new System.Windows.Forms.Button();
             this.btn_DonHang = new System.Windows.Forms.Button();
             this.btn_BanHang = new System.Windows.Forms.Button();
             this.btnTrangchu = new System.Windows.Forms.Button();
@@ -43,8 +43,6 @@
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTieuDeTrang = new System.Windows.Forms.Label();
             this.pnlDesktop = new System.Windows.Forms.Panel();
-            this.chI_TIET_HOA_DONTableAdapter1 = new BTL_QLCHG.DataSet1TableAdapters.CHI_TIET_HOA_DONTableAdapter();
-            this.chI_TIET_HOA_DONTableAdapter2 = new BTL_QLCHG.DataSet1TableAdapters.CHI_TIET_HOA_DONTableAdapter();
             this.roundPanel5 = new BTL_QLCHG.Utils.RoundPanel();
             this.dgvHoatDong = new System.Windows.Forms.DataGridView();
             this.label5 = new System.Windows.Forms.Label();
@@ -90,24 +88,6 @@
             this.pnlSidebar.Size = new System.Drawing.Size(200, 645);
             this.pnlSidebar.TabIndex = 0;
             // 
-            // btnKhuyenMai
-            // 
-            this.btnKhuyenMai.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btnKhuyenMai.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnKhuyenMai.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnKhuyenMai.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSlateGray;
-            this.btnKhuyenMai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnKhuyenMai.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.btnKhuyenMai.ForeColor = System.Drawing.Color.White;
-            this.btnKhuyenMai.Location = new System.Drawing.Point(0, 461);
-            this.btnKhuyenMai.Name = "btnKhuyenMai";
-            this.btnKhuyenMai.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btnKhuyenMai.Size = new System.Drawing.Size(200, 50);
-            this.btnKhuyenMai.TabIndex = 10;
-            this.btnKhuyenMai.Text = "KHUYẾN MÃI";
-            this.btnKhuyenMai.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnKhuyenMai.UseVisualStyleBackColor = false;
-            // 
             // btn_DangXuat
             // 
             this.btn_DangXuat.BackColor = System.Drawing.Color.MidnightBlue;
@@ -126,6 +106,25 @@
             this.btn_DangXuat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_DangXuat.UseVisualStyleBackColor = false;
             this.btn_DangXuat.Click += new System.EventHandler(this.btn_DangXuat_Click);
+            // 
+            // btnKhuyenMai
+            // 
+            this.btnKhuyenMai.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btnKhuyenMai.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnKhuyenMai.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnKhuyenMai.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSlateGray;
+            this.btnKhuyenMai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnKhuyenMai.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.btnKhuyenMai.ForeColor = System.Drawing.Color.White;
+            this.btnKhuyenMai.Location = new System.Drawing.Point(0, 461);
+            this.btnKhuyenMai.Name = "btnKhuyenMai";
+            this.btnKhuyenMai.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btnKhuyenMai.Size = new System.Drawing.Size(200, 50);
+            this.btnKhuyenMai.TabIndex = 10;
+            this.btnKhuyenMai.Text = "KHUYẾN MÃI";
+            this.btnKhuyenMai.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnKhuyenMai.UseVisualStyleBackColor = false;
+            this.btnKhuyenMai.Click += new System.EventHandler(this.btnKhuyenMai_Click);
             // 
             // btn_BaoCao
             // 
@@ -184,25 +183,6 @@
             this.btn_Giay.UseVisualStyleBackColor = false;
             this.btn_Giay.Click += new System.EventHandler(this.btn_Giay_Click);
             // 
-            // btn_KhachHang
-            // 
-            this.btn_KhachHang.BackColor = System.Drawing.Color.MidnightBlue;
-            this.btn_KhachHang.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_KhachHang.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btn_KhachHang.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSlateGray;
-            this.btn_KhachHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_KhachHang.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.btn_KhachHang.ForeColor = System.Drawing.Color.White;
-            this.btn_KhachHang.Location = new System.Drawing.Point(0, 211);
-            this.btn_KhachHang.Name = "btn_KhachHang";
-            this.btn_KhachHang.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
-            this.btn_KhachHang.Size = new System.Drawing.Size(200, 50);
-            this.btn_KhachHang.TabIndex = 3;
-            this.btn_KhachHang.Text = "KHÁCH HÀNG";
-            this.btn_KhachHang.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_KhachHang.UseVisualStyleBackColor = false;
-            this.btn_KhachHang.Click += new System.EventHandler(this.btn_KhachHang_Click);
-            // 
             // btn_NhanVien
             // 
             this.btn_NhanVien.BackColor = System.Drawing.Color.MidnightBlue;
@@ -221,6 +201,25 @@
             this.btn_NhanVien.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_NhanVien.UseVisualStyleBackColor = false;
             this.btn_NhanVien.Click += new System.EventHandler(this.btn_NhanVien_Click);
+            // 
+            // btn_KhachHang
+            // 
+            this.btn_KhachHang.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btn_KhachHang.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_KhachHang.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btn_KhachHang.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightSlateGray;
+            this.btn_KhachHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_KhachHang.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.btn_KhachHang.ForeColor = System.Drawing.Color.White;
+            this.btn_KhachHang.Location = new System.Drawing.Point(0, 211);
+            this.btn_KhachHang.Name = "btn_KhachHang";
+            this.btn_KhachHang.Padding = new System.Windows.Forms.Padding(25, 0, 0, 0);
+            this.btn_KhachHang.Size = new System.Drawing.Size(200, 50);
+            this.btn_KhachHang.TabIndex = 3;
+            this.btn_KhachHang.Text = "KHÁCH HÀNG";
+            this.btn_KhachHang.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_KhachHang.UseVisualStyleBackColor = false;
+            this.btn_KhachHang.Click += new System.EventHandler(this.btn_KhachHang_Click);
             // 
             // btn_DonHang
             // 
@@ -331,14 +330,6 @@
             this.pnlDesktop.Name = "pnlDesktop";
             this.pnlDesktop.Size = new System.Drawing.Size(848, 650);
             this.pnlDesktop.TabIndex = 2;
-            // 
-            // chI_TIET_HOA_DONTableAdapter1
-            // 
-            this.chI_TIET_HOA_DONTableAdapter1.ClearBeforeFill = true;
-            // 
-            // chI_TIET_HOA_DONTableAdapter2
-            // 
-            this.chI_TIET_HOA_DONTableAdapter2.ClearBeforeFill = true;
             // 
             // roundPanel5
             // 
@@ -559,7 +550,5 @@
         private System.Windows.Forms.Label lblDoanhThuNgay;
         private System.Windows.Forms.Button btnKhuyenMai;
         private System.Windows.Forms.Button btnTrangchu;
-        private DataSet1TableAdapters.CHI_TIET_HOA_DONTableAdapter chI_TIET_HOA_DONTableAdapter1;
-        private DataSet1TableAdapters.CHI_TIET_HOA_DONTableAdapter chI_TIET_HOA_DONTableAdapter2;
     }
 }
