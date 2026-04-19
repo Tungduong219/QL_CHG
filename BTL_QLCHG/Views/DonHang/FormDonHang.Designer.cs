@@ -87,7 +87,7 @@
             this.btnHuyDon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHuyDon.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHuyDon.ForeColor = System.Drawing.Color.White;
-            this.btnHuyDon.Location = new System.Drawing.Point(447, 511);
+            this.btnHuyDon.Location = new System.Drawing.Point(307, 511);
             this.btnHuyDon.Name = "btnHuyDon";
             this.btnHuyDon.Size = new System.Drawing.Size(187, 31);
             this.btnHuyDon.TabIndex = 28;
@@ -102,7 +102,7 @@
             this.btnCapNhatGiaoHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapNhatGiaoHang.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCapNhatGiaoHang.ForeColor = System.Drawing.Color.White;
-            this.btnCapNhatGiaoHang.Location = new System.Drawing.Point(668, 511);
+            this.btnCapNhatGiaoHang.Location = new System.Drawing.Point(617, 511);
             this.btnCapNhatGiaoHang.Name = "btnCapNhatGiaoHang";
             this.btnCapNhatGiaoHang.Size = new System.Drawing.Size(186, 31);
             this.btnCapNhatGiaoHang.TabIndex = 27;
@@ -117,7 +117,7 @@
             this.btnTabHoanTra.FlatAppearance.BorderSize = 0;
             this.btnTabHoanTra.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTabHoanTra.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTabHoanTra.Location = new System.Drawing.Point(378, 61);
+            this.btnTabHoanTra.Location = new System.Drawing.Point(336, 61);
             this.btnTabHoanTra.Name = "btnTabHoanTra";
             this.btnTabHoanTra.Size = new System.Drawing.Size(149, 31);
             this.btnTabHoanTra.TabIndex = 23;
@@ -132,7 +132,7 @@
             this.btnXemChiTiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXemChiTiet.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnXemChiTiet.ForeColor = System.Drawing.Color.White;
-            this.btnXemChiTiet.Location = new System.Drawing.Point(280, 511);
+            this.btnXemChiTiet.Location = new System.Drawing.Point(25, 511);
             this.btnXemChiTiet.Name = "btnXemChiTiet";
             this.btnXemChiTiet.Size = new System.Drawing.Size(128, 31);
             this.btnXemChiTiet.TabIndex = 18;
@@ -164,7 +164,7 @@
             this.btnTim.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTim.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTim.ForeColor = System.Drawing.Color.White;
-            this.btnTim.Location = new System.Drawing.Point(1022, 111);
+            this.btnTim.Location = new System.Drawing.Point(737, 93);
             this.btnTim.Name = "btnTim";
             this.btnTim.Size = new System.Drawing.Size(75, 25);
             this.btnTim.TabIndex = 26;
@@ -176,7 +176,7 @@
             // txtTimKiem
             // 
             this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTimKiem.Location = new System.Drawing.Point(773, 111);
+            this.txtTimKiem.Location = new System.Drawing.Point(488, 93);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(230, 21);
             this.txtTimKiem.TabIndex = 25;
@@ -206,7 +206,7 @@
             this.btnLoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoc.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLoc.ForeColor = System.Drawing.Color.White;
-            this.btnLoc.Location = new System.Drawing.Point(1022, 79);
+            this.btnLoc.Location = new System.Drawing.Point(737, 61);
             this.btnLoc.Name = "btnLoc";
             this.btnLoc.Size = new System.Drawing.Size(75, 25);
             this.btnLoc.TabIndex = 24;
@@ -221,7 +221,7 @@
             this.dtpTuNgay.CustomFormat = "dd/MM/yyyy";
             this.dtpTuNgay.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpTuNgay.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTuNgay.Location = new System.Drawing.Point(773, 79);
+            this.dtpTuNgay.Location = new System.Drawing.Point(488, 61);
             this.dtpTuNgay.Name = "dtpTuNgay";
             this.dtpTuNgay.Size = new System.Drawing.Size(112, 21);
             this.dtpTuNgay.TabIndex = 20;
@@ -233,7 +233,7 @@
             this.dtpDenNgay.CustomFormat = "dd/MM/yyyy";
             this.dtpDenNgay.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpDenNgay.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpDenNgay.Location = new System.Drawing.Point(891, 79);
+            this.dtpDenNgay.Location = new System.Drawing.Point(606, 61);
             this.dtpDenNgay.Name = "dtpDenNgay";
             this.dtpDenNgay.Size = new System.Drawing.Size(112, 21);
             this.dtpDenNgay.TabIndex = 22;
@@ -282,7 +282,7 @@
             this.dgvTatCa.RowHeadersWidth = 51;
             this.dgvTatCa.RowTemplate.Height = 24;
             this.dgvTatCa.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTatCa.Size = new System.Drawing.Size(1063, 280);
+            this.dgvTatCa.Size = new System.Drawing.Size(787, 280);
             this.dgvTatCa.TabIndex = 0;
             this.dgvTatCa.UseWaitCursor = true;
             // 
@@ -451,7 +451,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1112, 554);
+            this.ClientSize = new System.Drawing.Size(824, 554);
             this.Controls.Add(this.tcDonHang);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnHuyDon);

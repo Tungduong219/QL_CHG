@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -22,7 +22,7 @@ namespace BTL_QLCHG.Views
             cboGioiTinh.DropDownStyle = ComboBoxStyle.DropDownList;
 
             cboQuyen.Items.Clear();
-            cboQuyen.Items.AddRange(new string[] { "Admin", "Nhân viên" });
+            cboQuyen.Items.AddRange(new string[] { "Admin", "Quản lý", "Nhân viên" });
             cboQuyen.DropDownStyle = ComboBoxStyle.DropDownList;
 
             this.btnLuu.Click += new EventHandler(btnLuu_Click);
@@ -43,7 +43,7 @@ namespace BTL_QLCHG.Views
             cboGioiTinh.DropDownStyle = ComboBoxStyle.DropDownList;
 
             cboQuyen.Items.Clear();
-            cboQuyen.Items.AddRange(new string[] { "Admin", "Nhân viên" });
+            cboQuyen.Items.AddRange(new string[] { "Admin", "Quản lý", "Nhân viên" });
             cboQuyen.DropDownStyle = ComboBoxStyle.DropDownList;
 
             this.btnLuu.Click += new EventHandler(btnLuu_Click);
@@ -57,7 +57,7 @@ namespace BTL_QLCHG.Views
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM NhanVien tblWHERE sMaNV = @MaNV", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tblNhanVien WHERE sMaNV = @MaNV", conn);
                 cmd.Parameters.AddWithValue("@MaNV", maNVCu);
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())

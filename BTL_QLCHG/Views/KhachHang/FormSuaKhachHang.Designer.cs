@@ -1,6 +1,6 @@
-﻿namespace BTL_QLCHG.Views
+namespace BTL_QLCHG.Views
 {
-    partial class FormThemKhachHang
+    partial class FormSuaKhachHang
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.btn_Quaylai = new System.Windows.Forms.Button();
             this.roundPanel1 = new BTL_QLCHG.Utils.RoundPanel();
-            this.btnHuy = new System.Windows.Forms.Button();
+            this.btnHuyBo = new System.Windows.Forms.Button();
             this.btnLuu = new System.Windows.Forms.Button();
             this.txtDiaChi = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -89,7 +89,7 @@
             // 
             this.roundPanel1.BackColor = System.Drawing.Color.White;
             this.roundPanel1.BorderRadius = 15;
-            this.roundPanel1.Controls.Add(this.btnHuy);
+            this.roundPanel1.Controls.Add(this.btnHuyBo);
             this.roundPanel1.Controls.Add(this.btnLuu);
             this.roundPanel1.Controls.Add(this.txtDiaChi);
             this.roundPanel1.Controls.Add(this.label7);
@@ -111,15 +111,16 @@
             // 
             // btnHuy
             // 
-            this.btnHuy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHuy.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHuy.ForeColor = System.Drawing.Color.Black;
-            this.btnHuy.Location = new System.Drawing.Point(19, 259);
-            this.btnHuy.Name = "btnHuy";
-            this.btnHuy.Size = new System.Drawing.Size(346, 30);
-            this.btnHuy.TabIndex = 11;
-            this.btnHuy.Text = "Hủy bỏ";
-            this.btnHuy.UseVisualStyleBackColor = true;
+            this.btnHuyBo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHuyBo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHuyBo.ForeColor = System.Drawing.Color.Black;
+            this.btnHuyBo.Location = new System.Drawing.Point(19, 259);
+            this.btnHuyBo.Name = "btnHuyBo";
+            this.btnHuyBo.Size = new System.Drawing.Size(346, 30);
+            this.btnHuyBo.TabIndex = 11;
+            this.btnHuyBo.Text = "Hủy bỏ";
+            this.btnHuyBo.UseVisualStyleBackColor = true;
+            this.btnHuyBo.Click += new System.EventHandler(this.btnHuyBo_Click);
             // 
             // btnLuu
             // 
@@ -301,7 +302,7 @@
         private System.Windows.Forms.DateTimePicker dtpNgaySinh;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtDiaChi;
-        private System.Windows.Forms.Button btnHuy;
+        private System.Windows.Forms.Button btnHuyBo;
         private System.Windows.Forms.Button btnLuu;
     }
 }

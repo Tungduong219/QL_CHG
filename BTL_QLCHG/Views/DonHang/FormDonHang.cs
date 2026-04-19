@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -223,8 +223,20 @@ namespace donhang
                 MessageBox.Show("Đơn này đã nằm trong danh sách Hoàn trả rồi!", "Thông báo");
                 return;
             }
-            if (dgvTatCa.CurrentRow == null) return;
-            string maHD = dgvTatCa.CurrentRow.Cells["colMa_TC"].Value.ToString();
+
+            // Lấy mã HĐ từ đúng tab đang chọn
+            string maHD = null;
+            if (tcDonHang.SelectedIndex == 0)
+            {
+                if (dgvTatCa.CurrentRow == null) { MessageBox.Show("Vui lòng chọn một đơn hàng!", "Thông báo"); return; }
+                maHD = dgvTatCa.CurrentRow.Cells["colMa_TC"].Value.ToString();
+            }
+            else if (tcDonHang.SelectedIndex == 1)
+            {
+                if (dgvGiaoHang.CurrentRow == null) { MessageBox.Show("Vui lòng chọn một đơn hàng!", "Thông báo"); return; }
+                maHD = dgvGiaoHang.CurrentRow.Cells["colMa_GH"].Value.ToString();
+            }
+
             using (SqlConnection conn = new SqlConnection(strConnect)) 
             {
                 conn.Open();
@@ -242,7 +254,6 @@ namespace donhang
                 if (qs == DialogResult.Yes)
                 {
                     string lyDoTraHang = TaoPopupChonLyDo();
-
                     if (string.IsNullOrWhiteSpace(lyDoTraHang)) return;
 
                     SqlTransaction trans = conn.BeginTransaction();
@@ -265,9 +276,7 @@ namespace donhang
                         SqlCommand cmdPT = new SqlCommand(sqlPT, conn, trans);
                         cmdPT.Parameters.AddWithValue("@maPT", maPT);
                         cmdPT.Parameters.AddWithValue("@ma", maHD);
-
                         cmdPT.Parameters.AddWithValue("@lyDo", lyDoTraHang);
-
                         cmdPT.ExecuteNonQuery();
 
                         string sqlCTT = @"INSERT INTO tblChiTietTra(sMaPT, sMaSKU, iSoLuongTra, sTinhTrang)

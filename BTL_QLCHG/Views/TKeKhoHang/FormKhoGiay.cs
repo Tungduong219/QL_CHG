@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -159,8 +159,8 @@ namespace TkeKhohang
 
         private void btnLocTra_Click(object sender, EventArgs e)
         {
-            string tuNgay = dtpTuNgayTra.Value.ToString("yyyy/MM/dd");
-            string denNgay = dtpDenNgayTra.Value.ToString("yyyy/MM/dd") + " 23:59:59";
+            string tuNgay = dtpTuNgayTra.Value.ToString("yyyy-MM-dd");
+            string denNgay = dtpDenNgayTra.Value.ToString("yyyy-MM-dd") + " 23:59:59";
             LoadPhieuTra($" WHERE dNgayTra >= '{tuNgay}' AND dNgayTra <= '{denNgay}'");
         }
 
@@ -186,7 +186,7 @@ namespace TkeKhohang
 
             string maPN = dgvPhieuNhap.CurrentRow.Cells["colMaPN_Tab1"].Value.ToString();
 
-            if (MessageBox.Show($"Xóa phiếu {maPN} sẽ TRỪ kho. Dũng chắc chắn chứ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            if (MessageBox.Show($"Xóa phiếu {maPN} sẽ TRỪ kho. Bạn chắc chắn chứ?", "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 using (SqlConnection conn = new SqlConnection(strConnect))
                 {
@@ -194,23 +194,49 @@ namespace TkeKhohang
                     SqlTransaction trans = conn.BeginTransaction();
                     try
                     {
+                        // Lấy danh sách chi tiết nhập
                         string sqlGetCT = "SELECT sMaSKU, iSoLuongNhap FROM tblChiTietNhap WHERE sMaPN = @ma";
                         SqlCommand cmdGet = new SqlCommand(sqlGetCT, conn, trans);
                         cmdGet.Parameters.AddWithValue("@ma", maPN);
                         DataTable dt = new DataTable();
                         using (SqlDataReader rd = cmdGet.ExecuteReader()) { dt.Load(rd); }
 
+                        // Kiểm tra kho đủ để trừ không (tránh kho âm)
                         foreach (DataRow row in dt.Rows)
                         {
-                            string sqlUp = "UPDATE tblKhoGiay SET iSoLuong = iSoLuong - @sl WHERE sMaSKU = @sku";
-                            SqlCommand cmdUp = new SqlCommand(sqlUp, conn, trans);
+                            string sku = row["sMaSKU"].ToString();
+                            int slTru = Convert.ToInt32(row["iSoLuongNhap"]);
+                            SqlCommand cmdCheck = new SqlCommand(
+                                "SELECT iSoLuong FROM tblKhoGiay WHERE sMaSKU = @sku", conn, trans);
+                            cmdCheck.Parameters.AddWithValue("@sku", sku);
+                            int tonKho = Convert.ToInt32(cmdCheck.ExecuteScalar());
+                            if (tonKho < slTru)
+                            {
+                                trans.Rollback();
+                                MessageBox.Show($"Không thể xóa! SKU [{sku}] tồn kho ({tonKho}) ít hơn số lượng cần trừ ({slTru}).\nHàng đã bán ra, không được xóa phiếu nhập này.",
+                                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                        }
+
+                        // Trừ kho
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            SqlCommand cmdUp = new SqlCommand(
+                                "UPDATE tblKhoGiay SET iSoLuong = iSoLuong - @sl WHERE sMaSKU = @sku", conn, trans);
                             cmdUp.Parameters.AddWithValue("@sl", row["iSoLuongNhap"]);
                             cmdUp.Parameters.AddWithValue("@sku", row["sMaSKU"]);
                             cmdUp.ExecuteNonQuery();
                         }
 
-                        new SqlCommand($"DELETE FROM tblChiTietNhap WHERE sMaPN = '{maPN}'", conn, trans).ExecuteNonQuery();
-                        new SqlCommand($"DELETE FROM tblPhieuNhap WHERE sMaPN = '{maPN}'", conn, trans).ExecuteNonQuery();
+                        // Xóa chi tiết và phiếu (dùng parameterized query)
+                        SqlCommand cmdDelCT = new SqlCommand("DELETE FROM tblChiTietNhap WHERE sMaPN = @ma", conn, trans);
+                        cmdDelCT.Parameters.AddWithValue("@ma", maPN);
+                        cmdDelCT.ExecuteNonQuery();
+
+                        SqlCommand cmdDelPN = new SqlCommand("DELETE FROM tblPhieuNhap WHERE sMaPN = @ma", conn, trans);
+                        cmdDelPN.Parameters.AddWithValue("@ma", maPN);
+                        cmdDelPN.ExecuteNonQuery();
 
                         trans.Commit();
                         MessageBox.Show("Xóa phiếu thành công!");
@@ -249,14 +275,16 @@ namespace TkeKhohang
             string ma = dgvNCC.CurrentRow.Cells["colMaNCC_Tab4"].Value.ToString();
             string ten = dgvNCC.CurrentRow.Cells["colTenNCC_Tab4"].Value.ToString();
 
-            if (MessageBox.Show($"Xóa NCC {ten}?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show($"Xóa NCC '{ten}'?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 using (SqlConnection conn = new SqlConnection(strConnect))
                 {
                     try
                     {
                         conn.Open();
-                        new SqlCommand($"DELETE FROM tblNhaCungCap WHERE sMaNCC = '{ma}'", conn).ExecuteNonQuery();
+                        SqlCommand cmd = new SqlCommand("DELETE FROM tblNhaCungCap WHERE sMaNCC = @ma", conn);
+                        cmd.Parameters.AddWithValue("@ma", ma);
+                        cmd.ExecuteNonQuery();
                         MessageBox.Show("Đã xóa!");
                         LoadNCC();
                     }

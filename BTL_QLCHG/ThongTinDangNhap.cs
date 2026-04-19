@@ -1,14 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace BTL_QLCHG
 {
     public static class ThongTinDangNhap
     {
-        public static string MaNhanVien { get; set; } = "NV01"; // Mã để lưu DB
-        public static string TenNhanVien { get; set; } = "Quản trị viên"; // Tên để hiện lên Label
+        // Thông tin cơ bản
+        public static string MaNhanVien { get; set; } = "";
+        public static string TenNhanVien { get; set; } = "";
+
+        // Quyền người dùng
+        public static string Quyen { get; set; } = "";
+
+        // Helper properties kiểm tra nhanh
+        public static bool IsAdmin     => Quyen == "Admin";
+        public static bool IsQuanLy   => Quyen == "Quản lý";
+        public static bool IsNhanVien => Quyen == "Nhân viên";
+
+        // Reset khi đăng xuất
+        public static void DangXuat()
+        {
+            MaNhanVien  = "";
+            TenNhanVien = "";
+            Quyen       = "";
+        }
     }
 }

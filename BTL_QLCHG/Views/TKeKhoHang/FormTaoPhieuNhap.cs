@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -75,13 +75,15 @@ namespace TkeKhohang
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tblPhieuNhap", conn);
-                    int count = (int)cmd.ExecuteScalar();
-                    txtMaPN.Text = "PN" + (count + 1).ToString("D3");
+                    // Dùng MAX để tránh trùng mã khi đã xóa phiếu cũ
+                    SqlCommand cmd = new SqlCommand(
+                        "SELECT ISNULL(MAX(CAST(SUBSTRING(sMaPN, 3, LEN(sMaPN)) AS INT)), 0) FROM tblPhieuNhap", conn);
+                    int maxSo = (int)cmd.ExecuteScalar();
+                    txtMaPN.Text = "PN" + (maxSo + 1).ToString("D3");
                 }
                 catch
                 {
-                    txtMaPN.Text = "PN001"; // Lỗi hoặc bảng trống thì bắt đầu từ 001
+                    txtMaPN.Text = "PN001";
                 }
             }
         }

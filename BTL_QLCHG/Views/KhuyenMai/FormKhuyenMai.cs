@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -131,7 +131,7 @@ namespace BTL_QLCHG.Views
             {
                 // Sửa thành kiểu string
                 string maKM = dgvKhuyenMai.SelectedRows[0].Cells["sMaKM"].Value.ToString();
-                string tenKM = dgvKhuyenMai.SelectedRows[0].Cells["sTenKM"].Value.ToString();
+                string tenKM = dgvKhuyenMai.SelectedRows[0].Cells["sTenChuongTrinh"].Value.ToString();
 
                 DialogResult dr = MessageBox.Show($"Bạn có chắc muốn xóa khuyến mãi '{tenKM}'?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)

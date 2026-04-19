@@ -1,15 +1,15 @@
-﻿using BTL_QLCHG.Utils;
+using BTL_QLCHG.Utils;
 using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BTL_QLCHG.Views // Hiếu nhớ giữ nguyên namespace của bạn nhé
+namespace BTL_QLCHG.Views
 {
-    public partial class FormThemKhachHang : Form
+    public partial class FormSuaKhachHang : Form
     {
-        public FormThemKhachHang()
+        public FormSuaKhachHang()
         {
             InitializeComponent();
             cboGioiTinh.Items.Clear(); // Xóa sạch dữ liệu cũ (nếu có)
@@ -140,9 +140,9 @@ namespace BTL_QLCHG.Views // Hiếu nhớ giữ nguyên namespace của bạn nh
         }
 
         // Sự kiện khi bấm nút Hủy bỏ
-        private void btnHuy_Click(object sender, EventArgs e)
+        private void btnHuyBo_Click(object sender, EventArgs e)
         {
-            this.Close(); // Đóng form luôn không làm gì cả
+            this.Close();
         }
         #endregion
         private void ResetForm()

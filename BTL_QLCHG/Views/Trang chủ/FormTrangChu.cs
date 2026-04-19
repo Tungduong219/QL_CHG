@@ -1,4 +1,4 @@
-﻿using BTL_QLCHG.Utils;
+using BTL_QLCHG.Utils;
 using BTL_QLCHG.Views.KhachHang;
 using donhang;
 using System;
@@ -20,6 +20,35 @@ namespace BTL_QLCHG.Views
         public FormTrangChu()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Ẩn/hiện nút menu sidebar theo quyền của người dùng đang đăng nhập.
+        /// </summary>
+        private void ApDungPhanQuyen()
+        {
+            // Hiển thị tên + vai trò trên header
+            lblTieuDeTrang.Text = $"Trang chủ  |  {ThongTinDangNhap.TenNhanVien}  [{ThongTinDangNhap.Quyen}]";
+
+            if (ThongTinDangNhap.IsAdmin)
+            {
+                // Admin: toàn quyền - hiện tất cả (không làm gì)
+            }
+            else if (ThongTinDangNhap.IsQuanLy)
+            {
+                // Quản lý: ẩn Nhân viên và Sản phẩm
+                btn_NhanVien.Visible = false;
+                btn_Giay.Visible     = false;
+            }
+            else
+            {
+                // Nhân viên: chỉ giữ Bán hàng, Đơn hàng, Khách hàng
+                btn_NhanVien.Visible = false;
+                btn_Giay.Visible     = false;
+                btn_KhoGiay.Visible  = false;
+                btn_BaoCao.Visible   = false;
+                btnKhuyenMai.Visible = false;
+            }
         }
         private Form formHienTai = null;
 
@@ -192,9 +221,11 @@ namespace BTL_QLCHG.Views
 
         private void btn_DangXuat_Click(object sender, EventArgs e)
         {
-           DialogResult ketqua = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult ketqua = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất không?", "Xác nhận",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (ketqua == DialogResult.Yes)
             {
+                ThongTinDangNhap.DangXuat(); // Xóa thông tin phiên làm việc
                 this.Close();
                 FormDangNhap frm = new FormDangNhap();
                 frm.Show();
@@ -203,6 +234,7 @@ namespace BTL_QLCHG.Views
 
         private void FormTrangChu_Load(object sender, EventArgs e)
         {
+            ApDungPhanQuyen(); // Áp dụng phân quyền ngay khi mở
             LoadThongKeNhanh();
             LoadHoatDongGanDay();
         }

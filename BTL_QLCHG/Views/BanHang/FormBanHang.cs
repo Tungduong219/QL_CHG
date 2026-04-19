@@ -1,4 +1,5 @@
-﻿using BTL_QLCHG.Utils;
+using BTL_QLCHG.Utils;
+using BTL_QLCHG.Views.BanHang;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -78,7 +80,8 @@ namespace BTL_QLCHG.Views
             dgvGioHang.Columns[5].Name = "Thành Tiền";
 
             dgvGioHang.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvGioHang.AllowUserToAddRows = false; 
+            dgvGioHang.AllowUserToAddRows = false;
+            dgvGioHang.AllowUserToDeleteRows = false;
             dgvGioHang.ReadOnly = false;
             dgvGioHang.Columns["Mã SKU"].ReadOnly = true;
             dgvGioHang.Columns["Tên Giày"].ReadOnly = true;
@@ -121,8 +124,20 @@ namespace BTL_QLCHG.Views
 
    
             lblNhanVien.Text = ThongTinDangNhap.TenNhanVien;
+            rdoTienMat.Checked = true;
+            rdoChuyenKhoan.Checked = false;
         }
 
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            string filter = txtTimKiem.Text.Trim();
+            DataTable dt = (DataTable)dgvDanhSachGiay.DataSource;
+            if (dt != null)
+            {
+                // Lọc theo Tên Giày hoặc Size
+                dt.DefaultView.RowFilter = string.Format("[Tên Giày] LIKE '%{0}%' OR Convert([Size], System.String) LIKE '%{0}%'", filter);
+            }
+        }
         private void dgvDanhSachGiay_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -133,23 +148,34 @@ namespace BTL_QLCHG.Views
                 string size = row.Cells["Size"].Value.ToString();
                 decimal giaBan = Convert.ToDecimal(row.Cells["Giá Bán"].Value);
 
+                // --- CHỖ MỚI: Lấy số lượng tồn kho thực tế ---
+                int tonKho = Convert.ToInt32(row.Cells["Tồn Kho"].Value);
+
                 bool daCoTrongGio = false;
                 foreach (DataGridViewRow gioHangRow in dgvGioHang.Rows)
                 {
                     if (gioHangRow.Cells["Mã SKU"].Value.ToString() == maSKU)
                     {
                         int soLuongCu = Convert.ToInt32(gioHangRow.Cells["Số Lượng"].Value);
+
+                        // --- CHỖ MỚI: Kiểm tra nếu cộng thêm có vượt quá tồn kho không ---
+                        if (soLuongCu + 1 > tonKho)
+                        {
+                            MessageBox.Show($"Không đủ hàng! Kho chỉ còn {tonKho} đôi.", "Thông báo");
+                            return;
+                        }
+
                         gioHangRow.Cells["Số Lượng"].Value = soLuongCu + 1;
-
                         gioHangRow.Cells["Thành Tiền"].Value = (soLuongCu + 1) * giaBan;
-
                         daCoTrongGio = true;
-                        break; 
+                        break;
                     }
                 }
 
                 if (!daCoTrongGio)
                 {
+                    // --- CHỖ MỚI: Kiểm tra tồn kho ngay lần đầu thêm ---
+                    if (tonKho < 1) { MessageBox.Show("Sản phẩm đã hết hàng!"); return; }
                     dgvGioHang.Rows.Add(maSKU, tenGiay, size, 1, giaBan, giaBan);
                 }
 
@@ -173,17 +199,36 @@ namespace BTL_QLCHG.Views
 
         private void btnThanhToan_Click(object sender, EventArgs e)
         {
+            // 1. Kiểm tra giỏ hàng
             if (dgvGioHang.Rows.Count == 0)
             {
-                MessageBox.Show("Giỏ hàng đang trống! Vui lòng chọn giày trước khi thanh toán.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Giỏ hàng đang trống!", "Thông báo");
                 return;
             }
 
+            // 2. Chuẩn bị dữ liệu
             string maHD = TaoMaHoaDonTuDong();
+            string phuongThuc = rdoTienMat.Checked ? "Tiền mặt" : "Chuyển khoản";
 
+            // Lấy số tiền từ nhãn Thành tiền (Xử lý chuỗi để lấy số decimal)
             string tienChu = lblThanhTien.Text.Replace("THÀNH TIỀN: ", "").Replace(" VNĐ", "").Replace(",", "").Trim();
             decimal tongTienSauGiam = Convert.ToDecimal(tienChu);
 
+            // 3. XỬ LÝ NẾU CHỌN CHUYỂN KHOẢN
+            if (rdoChuyenKhoan.Checked)
+            {
+                FormThanhToanQR frmQR = new FormThanhToanQR(tongTienSauGiam, maHD);
+                frmQR.ShowDialog();
+
+                // Nếu nhấn "Hủy" hoặc tắt Form mà chưa xác nhận -> Dừng luôn
+                if (!frmQR.IsSuccess)
+                {
+                    MessageBox.Show("Giao dịch chuyển khoản đã bị hủy!", "Thông báo");
+                    return;
+                }
+            }
+
+            // 4. LƯU DATABASE (Chỉ chạy khi là Tiền mặt HOẶC đã quét QR thành công)
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
                 if (conn.State == ConnectionState.Closed) conn.Open();
@@ -191,78 +236,62 @@ namespace BTL_QLCHG.Views
                 {
                     try
                     {
-                        // 3. Chèn dữ liệu vào bảng tblHoaDon
-                        string queryHD = @"INSERT INTO tblHoaDon (sMaHD, sMaNV, sMaKH, sMaKM, dNgayBan, fTongTien) 
-                                   VALUES (@MaHD, @MaNV, @MaKH, @MaKM, GETDATE(), @TongTien)";
-
-                        using (SqlCommand cmdHD = new SqlCommand(queryHD, conn, trans))
+                        // A. Chèn bảng tblHoaDon
+                        string qHD = @"INSERT INTO tblHoaDon (sMaHD, sMaNV, sMaKH, sMaKM, dNgayBan, fTongTien, sPhuongThuc) 
+                               VALUES (@MaHD, @MaNV, @MaKH, @MaKM, GETDATE(), @TongTien, @PT)";
+                        using (SqlCommand cmdHD = new SqlCommand(qHD, conn, trans))
                         {
                             cmdHD.Parameters.AddWithValue("@MaHD", maHD);
-
-                            // LẤY MÃ NHÂN VIÊN ĐANG ĐĂNG NHẬP (Theo ý cô giáo)
                             cmdHD.Parameters.AddWithValue("@MaNV", ThongTinDangNhap.MaNhanVien);
-
-                            cmdHD.Parameters.AddWithValue("@MaKH", maKhachHangChot); // KH01 hoặc mã khách tìm được
-
-                            // KIỂM TRA KHUYẾN MÃI: Nếu đang chọn dòng "Hãy chọn..." thì lưu NULL
-                            if (cboKhuyenMai.SelectedIndex <= 0)
-                            {
-                                cmdHD.Parameters.AddWithValue("@MaKM", DBNull.Value);
-                            }
-                            else
-                            {
-                                cmdHD.Parameters.AddWithValue("@MaKM", cboKhuyenMai.SelectedValue);
-                            }
-
+                            cmdHD.Parameters.AddWithValue("@MaKH", maKhachHangChot);
+                            cmdHD.Parameters.AddWithValue("@MaKM", cboKhuyenMai.SelectedIndex > 0 ? cboKhuyenMai.SelectedValue : DBNull.Value);
                             cmdHD.Parameters.AddWithValue("@TongTien", tongTienSauGiam);
+                            cmdHD.Parameters.AddWithValue("@PT", phuongThuc);
                             cmdHD.ExecuteNonQuery();
                         }
 
+                        // B. Lưu Chi tiết và Trừ kho
                         foreach (DataGridViewRow row in dgvGioHang.Rows)
                         {
                             if (row.Cells["Mã SKU"].Value == null) continue;
+                            string sku = row.Cells["Mã SKU"].Value.ToString();
+                            int sl = Convert.ToInt32(row.Cells["Số Lượng"].Value);
+                            decimal gia = Convert.ToDecimal(row.Cells["Đơn Giá"].Value);
 
-                            string maSKU = row.Cells["Mã SKU"].Value.ToString();
-                            int soLuongBan = Convert.ToInt32(row.Cells["Số Lượng"].Value);
-                            decimal donGia = Convert.ToDecimal(row.Cells["Đơn Giá"].Value);
-
-                            // A. Chèn vào bảng tblChiTietHoaDon
-                            string queryCTHD = @"INSERT INTO tblChiTietHoaDon (sMaHD, sMaSKU, iSoLuongBan, fDonGiaBan) 
-                                         VALUES (@MaHD, @MaSKU, @SoLuong, @DonGia)";
-                            using (SqlCommand cmdCTHD = new SqlCommand(queryCTHD, conn, trans))
+                            // Insert Chi tiết
+                            string qCT = "INSERT INTO tblChiTietHoaDon (sMaHD, sMaSKU, iSoLuongBan, fDonGiaBan) VALUES (@MaHD, @sku, @sl, @gia)";
+                            using (SqlCommand cmdCT = new SqlCommand(qCT, conn, trans))
                             {
-                                cmdCTHD.Parameters.AddWithValue("@MaHD", maHD);
-                                cmdCTHD.Parameters.AddWithValue("@MaSKU", maSKU);
-                                cmdCTHD.Parameters.AddWithValue("@SoLuong", soLuongBan);
-                                cmdCTHD.Parameters.AddWithValue("@DonGia", donGia);
-                                cmdCTHD.ExecuteNonQuery();
+                                cmdCT.Parameters.AddWithValue("@MaHD", maHD);
+                                cmdCT.Parameters.AddWithValue("@sku", sku);
+                                cmdCT.Parameters.AddWithValue("@sl", sl);
+                                cmdCT.Parameters.AddWithValue("@gia", gia);
+                                cmdCT.ExecuteNonQuery();
                             }
 
-                            // B. Cập nhật trừ số lượng trong kho tblKhoGiay
-                            string queryKho = "UPDATE tblKhoGiay SET iSoLuong = iSoLuong - @SoLuong WHERE sMaSKU = @MaSKU";
-                            using (SqlCommand cmdKho = new SqlCommand(queryKho, conn, trans))
+                            // Update số lượng kho
+                            string qKho = "UPDATE tblKhoGiay SET iSoLuong = iSoLuong - @sl WHERE sMaSKU = @sku";
+                            using (SqlCommand cmdK = new SqlCommand(qKho, conn, trans))
                             {
-                                cmdKho.Parameters.AddWithValue("@SoLuong", soLuongBan);
-                                cmdKho.Parameters.AddWithValue("@MaSKU", maSKU);
-                                cmdKho.ExecuteNonQuery();
+                                cmdK.Parameters.AddWithValue("@sl", sl);
+                                cmdK.Parameters.AddWithValue("@sku", sku);
+                                cmdK.ExecuteNonQuery();
                             }
                         }
 
-                        // 5. Chốt đơn
-                        trans.Commit();
-                        MessageBox.Show($"Thanh toán thành công!\nHóa đơn: {maHD}\nNgười lập: {ThongTinDangNhap.TenNhanVien}",
-                                        "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        trans.Commit(); // Hoàn tất lưu mọi thứ
+                        MessageBox.Show($"Thanh toán THÀNH CÔNG!\nHóa đơn: {maHD}\nHình thức: {phuongThuc}", "Thành công");
 
-                        // 6. Dọn dẹp giao diện sau khi bán xong
+                        // 5. Làm sạch Form sau khi bán xong
                         dgvGioHang.Rows.Clear();
-                        cboKhuyenMai.SelectedIndex = 0;
                         TinhTongTien();
-                        LoadDanhSachGiay(); // Load lại để cập nhật số lượng tồn kho mới lên màn hình
+                        LoadDanhSachGiay(); // Cập nhật lại tồn kho hiển thị
+                        rdoTienMat.Checked = true;
                     }
                     catch (Exception ex)
                     {
-                        trans.Rollback(); // Có lỗi thì hủy hết thao tác trên
-                        MessageBox.Show("Lỗi thanh toán: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        trans.Rollback(); // Lỗi thì hủy hết, không lưu gì cả
+                        MessageBox.Show("Lỗi lưu đơn hàng: " + ex.Message);
                     }
                 }
             }
@@ -354,7 +383,7 @@ namespace BTL_QLCHG.Views
                     string query = "SELECT sMaKH,sTenKH FROM tblKhachHang WHERE sDienThoai = @SDT";
                     using (SqlCommand cmd = new SqlCommand(query,conn))
                     {
-                        cmd.Parameters.AddWithValue("SDT", sdt);
+                        cmd.Parameters.AddWithValue("@SDT", sdt);
                         if (conn.State == ConnectionState.Closed)
                             conn.Open();
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -384,8 +413,51 @@ namespace BTL_QLCHG.Views
 
         private void btnThemKhach_Click(object sender, EventArgs e)
         {
-
+            ThemKhachHang frm = new ThemKhachHang();
+            frm.ShowDialog();
         }
 
+        private void dgvGioHang_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                // Kiểm tra xem có đang chọn dòng nào không
+                if (dgvGioHang.CurrentRow != null && !dgvGioHang.CurrentRow.IsNewRow)
+                {
+                    DialogResult dr = MessageBox.Show("Xóa sản phẩm này khỏi giỏ hàng?", "Xác nhận",
+                                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        // Xóa dòng
+                        dgvGioHang.Rows.Remove(dgvGioHang.CurrentRow);
+
+                        // GỌI TÍNH LẠI TIỀN (Quan trọng)
+                        TinhTongTien();
+
+                        // Chặn sự kiện mặc định để không bị lỗi "Row cannot be deleted"
+                        e.Handled = true;
+                    }
+                }
+            }
+        }
+
+        private void txtSDTKhach_Enter(object sender, EventArgs e)
+        {
+            if (txtSDTKhach.Text == " Tìm khách hàng(SDT/Tên)....")
+            {
+                txtSDTKhach.Text = "";
+                txtSDTKhach.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtSDTKhach_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSDTKhach.Text))
+            {
+                txtSDTKhach.Text = " Tìm khách hàng(SDT/Tên)....";
+                txtSDTKhach.ForeColor = Color.Gray;
+            }
+        }
     }
 }

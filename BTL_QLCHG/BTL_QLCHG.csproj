@@ -77,11 +77,23 @@
     <Compile Include="Views\BanHang\FormBanHang.Designer.cs">
       <DependentUpon>FormBanHang.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\BanHang\FormThanhToanQR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\BanHang\FormThanhToanQR.Designer.cs">
+      <DependentUpon>FormThanhToanQR.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\BaoCao\FormXemBaoCao.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\BaoCao\FormXemBaoCao.Designer.cs">
       <DependentUpon>FormXemBaoCao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KhachHang\ThemKhachHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\KhachHang\ThemKhachHang.Designer.cs">
+      <DependentUpon>ThemKhachHang.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\KhuyenMai\FormChiTietKhuyenMai.cs">
       <SubType>Form</SubType>
@@ -199,6 +211,9 @@
     <EmbeddedResource Include="Views\BanHang\FormBanHang.resx">
       <DependentUpon>FormBanHang.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\BanHang\FormThanhToanQR.resx">
+      <DependentUpon>FormThanhToanQR.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\BaoCao\FormXemBaoCao.resx">
       <DependentUpon>FormXemBaoCao.cs</DependentUpon>
     </EmbeddedResource>
@@ -243,6 +258,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Views\KhachHang\FormSuaKhachHang.resx">
       <DependentUpon>FormSuaKhachHang.cs</DependentUpon>
@@ -299,6 +315,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AnhQR.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
