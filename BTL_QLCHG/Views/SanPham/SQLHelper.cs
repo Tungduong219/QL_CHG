@@ -1,10 +1,10 @@
-﻿using System.Data;
+using System.Data;
 using System.Data.SqlClient;
 
 public class SQLHelper
 {
-    // Thay đổi chuỗi kết nối cho đúng với máy của bạn
-    private string strCon = @"Data Source=TUNGDUONG\SQLEXPRESS;Initial Catalog=QL_BanGiayHSK;Integrated Security=True;TrustServerCertificate=True";
+    // Lấy chuỗi kết nối từ App.config thay vì hardcode
+    private string strCon = System.Configuration.ConfigurationManager.ConnectionStrings["ChuoiKetNoi"].ConnectionString;
 
     public DataTable GetTable(string sql)
     {
