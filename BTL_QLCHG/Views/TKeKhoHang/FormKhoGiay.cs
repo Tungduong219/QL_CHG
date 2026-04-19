@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Configuration;
 
-namespace TkeKhohang
+namespace BTL_QLCHG.Views.TKeKhoHang
 {
     public partial class FormKhoGiay : Form
     {

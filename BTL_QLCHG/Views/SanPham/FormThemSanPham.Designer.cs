@@ -1,4 +1,4 @@
-﻿namespace BTL_QLBG
+﻿namespace BTL_QLCHG.Views.SanPham
 {
     partial class FormThemSanPham
     {

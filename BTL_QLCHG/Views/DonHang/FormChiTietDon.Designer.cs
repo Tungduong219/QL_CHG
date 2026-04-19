@@ -1,4 +1,4 @@
-﻿namespace donhang
+﻿namespace BTL_QLCHG.Views.DonHang
 {
     partial class FormChiTietDon
     {

@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace donhang
+namespace BTL_QLCHG.Views.DonHang
 {
     public partial class FormChiTietDon : Form
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace BTL_QLBG
+namespace BTL_QLCHG.Views.SanPham
 {
     public class GiayDAL
     {

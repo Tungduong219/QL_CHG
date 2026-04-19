@@ -1,4 +1,4 @@
-﻿namespace TkeKhohang
+﻿namespace BTL_QLCHG.Views.TKeKhoHang
 {
     partial class FormTaoPhieuNhap
     {

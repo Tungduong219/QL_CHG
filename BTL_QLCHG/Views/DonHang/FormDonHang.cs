@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Configuration;
 
-namespace donhang
+namespace BTL_QLCHG.Views.DonHang
 {
     public partial class FormDonHang : Form
     {

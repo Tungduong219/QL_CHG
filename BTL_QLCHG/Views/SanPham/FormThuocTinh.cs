@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows.Forms;
 
-namespace BTL_QLBG
+namespace BTL_QLCHG.Views.SanPham
 {
     public partial class FormThuocTinh : Form
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace BTL_QLBG
+namespace BTL_QLCHG.Views.SanPham
 {
     public partial class FormThemSanPham : Form
     {

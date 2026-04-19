@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Windows.Forms;
 
-namespace BTL_QLBG
+namespace BTL_QLCHG.Views.SanPham
 {
     public partial class FormSanPham : Form
     {

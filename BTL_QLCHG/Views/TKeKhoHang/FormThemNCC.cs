@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
 
-namespace TkeKhohang
+namespace BTL_QLCHG.Views.TKeKhoHang
 {
     public partial class FormThemNCC : Form
     {
